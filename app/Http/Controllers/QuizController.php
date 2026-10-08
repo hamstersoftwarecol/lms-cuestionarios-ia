@@ -102,7 +102,7 @@ class QuizController extends Controller
         $created = DB::transaction(function () use ($user, $validated, $note, $generated, $request) {
             $quiz = $user->quizzes()->create([
                 'note_id' => $note?->id,
-                'title' => $validated['title'] ?: ($generated['title'] ?: 'Cuestionario: '.$note?->title),
+                'title' => ($validated['title'] ?? null) ?: (($generated['title'] ?? null) ?: 'Cuestionario: '.$note?->title),
                 'description' => $generated['description'] ?? null,
                 'difficulty' => $validated['difficulty'],
                 'language' => $validated['language'] === 'auto' ? 'es' : $validated['language'],

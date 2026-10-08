@@ -14,6 +14,11 @@
     html {
         -webkit-tap-highlight-color: transparent;
     }
+
+    /* Evita que tablas o textos largos ensanchen las columnas del grid (scroll horizontal en móvil). */
+    .grid > * {
+        min-width: 0;
+    }
 }
 
 @layer components {
@@ -136,6 +141,11 @@ div.dt-container table.dataTable {
     @apply w-full border-collapse;
 }
 
+/* Si las columnas prioritarias no caben, la tabla se desplaza dentro de la tarjeta, no la página. */
+div.dt-container .dt-layout-table {
+    @apply overflow-x-auto;
+}
+
 div.dt-container table.dataTable thead th {
     @apply border-b border-slate-200 bg-slate-50 px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:bg-slate-800/60 dark:text-slate-400;
 }
@@ -169,6 +179,18 @@ div.dt-button-collection {
     @apply rounded-xl border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800 !important;
 }
 
+table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control {
+    @apply whitespace-nowrap;
+}
+
 table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control::before {
-    @apply border-l-brand-600 !important;
+    @apply mr-2 inline-block align-middle border-l-brand-600 !important;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details {
+    @apply w-full;
+}
+
+table.dataTable > tbody > tr.child span.dtr-title {
+    @apply font-semibold text-slate-500 dark:text-slate-400;
 }

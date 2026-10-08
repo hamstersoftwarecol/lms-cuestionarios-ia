@@ -8,7 +8,7 @@
     @endunless
 
     <div class="card card-body">
-        <table data-datatable data-export-title="Sesiones activas" data-order='[[4, "desc"]]' class="display w-full">
+        <table data-datatable data-export-title="Sesiones activas" data-order='[[4, "desc"]]' class="hover w-full">
             <thead>
                 <tr><th>Usuario</th><th>Dispositivo</th><th>IP</th><th>Estado</th><th>Última actividad</th><th class="no-export no-sort">Acciones</th></tr>
             </thead>

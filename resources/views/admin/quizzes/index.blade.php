@@ -2,7 +2,7 @@
     <x-page-header title="Todos los cuestionarios" subtitle="Modera el contenido generado por los usuarios." />
 
     <div class="card card-body">
-        <table data-datatable data-export-title="Cuestionarios" data-order='[[6, "desc"]]' class="display w-full">
+        <table data-datatable data-export-title="Cuestionarios" data-order='[[6, "desc"]]' class="hover w-full">
             <thead>
                 <tr><th>Título</th><th>Autor</th><th>Preguntas</th><th>Intentos</th><th>Media</th><th>Visibilidad</th><th>Creado</th><th class="no-export no-sort"></th></tr>
             </thead>

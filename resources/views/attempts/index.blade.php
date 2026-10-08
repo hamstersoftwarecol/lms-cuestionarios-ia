@@ -5,7 +5,7 @@
         @if ($attempts->isEmpty())
             <p class="py-8 text-center text-sm muted">Todavía no has completado ningún cuestionario.</p>
         @else
-            <table data-datatable data-export-title="Historial de cuestionarios" data-order='[[0, "desc"]]' class="display w-full">
+            <table data-datatable data-export-title="Historial de cuestionarios" data-order='[[0, "desc"]]' class="hover w-full">
                 <thead>
                     <tr>
                         <th>Fecha</th>

@@ -12,7 +12,9 @@ class QuestionRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        $quiz = $this->route('quiz') ?? $this->route('question')?->quiz;
+
+        return $quiz !== null && $this->user()->can('update', $quiz);
     }
 
     protected function prepareForValidation(): void

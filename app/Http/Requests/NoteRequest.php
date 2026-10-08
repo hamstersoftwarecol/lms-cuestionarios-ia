@@ -9,7 +9,9 @@ class NoteRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        $note = $this->route('note');
+
+        return $note === null || $this->user()->can('update', $note);
     }
 
     /**
@@ -43,6 +45,7 @@ class NoteRequest extends FormRequest
     {
         return [
             'content.required_without' => 'Escribe el contenido o sube un documento.',
+            'document.uploaded' => 'No se pudo subir el archivo: probablemente supera upload_max_filesize/post_max_size de PHP.',
             'document.extensions' => 'Formato no admitido. Usa PDF, imagen (JPG, PNG, WEBP, HEIC), Word (.docx) o texto.',
         ];
     }

@@ -42,7 +42,12 @@ export function initDataTables() {
             responsive: true,
             pageLength: parseInt(table.dataset.pageLength || '10', 10),
             order: table.dataset.order ? JSON.parse(table.dataset.order) : [],
-            columnDefs: [{ targets: 'no-sort', orderable: false }],
+            columnDefs: [
+                { targets: 'no-sort', orderable: false },
+                // La primera columna y la de acciones se ocultan las últimas en pantallas pequeñas.
+                { targets: 0, responsivePriority: 1 },
+                { targets: -1, responsivePriority: 2 },
+            ],
             layout: {
                 topStart: {
                     buttons: [

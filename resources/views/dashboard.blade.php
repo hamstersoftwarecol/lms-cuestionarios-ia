@@ -28,7 +28,7 @@
         <x-stat-card label="Insignias" :value="$stats['badges'].'/'.$stats['total_badges']" icon="trophy" color="emerald" hint="Logros desbloqueados" />
     </div>
 
-    <div class="grid gap-6 lg:grid-cols-3">
+    <div class="grid gap-6 lg:grid-cols-3 lg:items-start">
         <div class="card lg:col-span-2">
             <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4 dark:border-slate-800">
                 <h2 class="card-title">Tareas para hoy</h2>
@@ -103,7 +103,7 @@
         </div>
     </div>
 
-    <div class="grid gap-6 lg:grid-cols-2">
+    <div class="grid gap-6 lg:grid-cols-2 lg:items-start">
         <div class="card">
             <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4 dark:border-slate-800">
                 <h2 class="card-title">Últimos resultados</h2>

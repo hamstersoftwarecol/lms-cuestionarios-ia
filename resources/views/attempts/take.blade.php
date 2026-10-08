@@ -16,31 +16,36 @@
         </div>
 
         <div class="card card-body">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-                <div class="flex gap-1.5">
-                    <span class="pill" :class="current.type === 'sata' ? @js(\App\Support\Palette::pill('violet')) : @js(\App\Support\Palette::pill('indigo'))"
-                          x-text="current.type === 'sata' ? 'Selecciona todas las que apliquen' : 'Una respuesta'"></span>
-                    <span class="pill {{ \App\Support\Palette::pill('slate') }}" x-text="current.difficulty"></span>
+            {{-- Cada pregunta se vuelve a montar entera (clave = id) para que Alpine no reutilice opciones de la anterior. --}}
+            <template x-for="q in [current]" :key="q.id">
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex gap-1.5">
+                            <span class="pill" :class="q.type === 'sata' ? @js(\App\Support\Palette::pill('violet')) : @js(\App\Support\Palette::pill('indigo'))"
+                                  x-text="q.type === 'sata' ? 'Selecciona todas las que apliquen' : 'Una respuesta'"></span>
+                            <span class="pill {{ \App\Support\Palette::pill('slate') }}" x-text="q.difficulty"></span>
+                        </div>
+                        {{-- Texto que lee la voz: enunciado y opciones de la pregunta actual --}}
+                        <span id="tts-question" class="sr-only" x-text="q.text + '. ' + q.options.map((o, i) => String.fromCharCode(65 + i) + ': ' + o).join('. ')"></span>
+                        <x-tts-button compact source="#tts-question" :voice="$voice" />
+                    </div>
+
+                    <h2 class="mt-4 text-lg font-semibold leading-snug sm:text-xl" x-text="q.text"></h2>
+
+                    <div class="mt-6 space-y-3">
+                        <template x-for="(option, i) in q.options" :key="i">
+                            <button type="button" @click="toggle(i)"
+                                    :class="isSelected(i) ? 'border-brand-500 bg-brand-50 ring-2 ring-brand-500/30 dark:bg-brand-500/10' : 'border-slate-200 hover:border-slate-300 dark:border-slate-700 dark:hover:border-slate-600'"
+                                    class="flex w-full items-start gap-3 rounded-2xl border p-4 text-left transition">
+                                <span :class="[isSelected(i) ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-300 dark:border-slate-600', q.type === 'sata' ? 'rounded-md' : 'rounded-full']"
+                                      class="flex h-7 w-7 shrink-0 items-center justify-center border-2 text-xs font-bold"
+                                      x-text="isSelected(i) ? '✓' : String.fromCharCode(65 + i)"></span>
+                                <span class="pt-0.5" x-text="option"></span>
+                            </button>
+                        </template>
+                    </div>
                 </div>
-                {{-- Texto que lee la voz: enunciado y opciones de la pregunta actual --}}
-                <span id="tts-question" class="sr-only" x-text="current.text + '. ' + current.options.map((o, i) => String.fromCharCode(65 + i) + ': ' + o).join('. ')"></span>
-                <x-tts-button compact source="#tts-question" :voice="$voice" />
-            </div>
-
-            <h2 class="mt-4 text-lg font-semibold leading-snug sm:text-xl" x-text="current.text"></h2>
-
-            <div class="mt-6 space-y-3">
-                <template x-for="(option, i) in current.options" :key="current.id + '-' + i">
-                    <button type="button" @click="toggle(i)"
-                            :class="isSelected(i) ? 'border-brand-500 bg-brand-50 ring-2 ring-brand-500/30 dark:bg-brand-500/10' : 'border-slate-200 hover:border-slate-300 dark:border-slate-700 dark:hover:border-slate-600'"
-                            class="flex w-full items-start gap-3 rounded-2xl border p-4 text-left transition">
-                        <span :class="[isSelected(i) ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-300 dark:border-slate-600', current.type === 'sata' ? 'rounded-md' : 'rounded-full']"
-                              class="flex h-7 w-7 shrink-0 items-center justify-center border-2 text-xs font-bold"
-                              x-text="isSelected(i) ? '✓' : String.fromCharCode(65 + i)"></span>
-                        <span class="pt-0.5" x-text="option"></span>
-                    </button>
-                </template>
-            </div>
+            </template>
 
             <div class="mt-8 flex items-center justify-between gap-3">
                 <button type="button" class="btn-secondary" @click="prev()" :disabled="index === 0"><x-heroicon-o-chevron-left class="h-4 w-4" /> Anterior</button>

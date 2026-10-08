@@ -47,13 +47,14 @@ export function ttsPlayer({ url, voice = 'Kore', text = '', source = null, lang 
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        Accept: 'audio/wav, application/json',
+                        // JSON primero: los errores (validación, límite de uso) llegan como JSON y no como redirección.
+                        Accept: 'application/json, audio/wav',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                     },
                     body: JSON.stringify({ text: content, voice: this.voice }),
                 });
 
-                if (!response.ok) {
+                if (!response.ok || !(response.headers.get('Content-Type') || '').includes('audio')) {
                     const data = await response.json().catch(() => ({}));
                     if (data.fallback) {
                         this.error = data.message || null;

@@ -41,7 +41,13 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('admin', fn (User $user) => $user->isAdmin());
 
         RateLimiter::for('ai', fn (Request $request) => Limit::perMinute(15)->by($request->user()?->id ?: $request->ip())
-            ->response(fn () => back()->with('error', 'Has hecho demasiadas peticiones a la IA. Espera un minuto.')));
+            ->response(function (Request $request) {
+                $message = 'Has hecho demasiadas peticiones a la IA. Espera un minuto.';
+
+                return $request->expectsJson()
+                    ? response()->json(['fallback' => true, 'message' => $message], 429)
+                    : back()->with('error', $message);
+            }));
 
         $this->registerAuditListeners();
         $this->shareLayoutData();

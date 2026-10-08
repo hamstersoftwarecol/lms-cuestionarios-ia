@@ -34,6 +34,7 @@ function build(canvas) {
                   ? `${color}22`
                   : dataset.colors || color,
             borderRadius: config.type === 'bar' ? 6 : 0,
+            maxBarThickness: 48,
         };
     });
 

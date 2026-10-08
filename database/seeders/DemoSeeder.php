@@ -102,7 +102,10 @@ class DemoSeeder extends Seeder
         $group->quizzes()->attach($quiz->id, ['shared_by' => $student->id]);
 
         // Compañeros con intentos repartidos en el tiempo para poblar las clasificaciones.
-        $classmates = User::factory()->count(6)->create();
+        $classmates = User::factory()->count(6)->sequence(fn ($sequence) => [
+            'created_at' => now()->subDays(random_int(1, 28)),
+            'last_login_at' => now()->subHours(random_int(1, 200)),
+        ])->create();
 
         foreach ($classmates as $i => $classmate) {
             $group->members()->attach($classmate->id, ['role' => 'member', 'joined_at' => now()]);
@@ -135,11 +138,11 @@ class DemoSeeder extends Seeder
 
     private function fakeAttempts(User $user, Quiz $quiz, int $attempts, bool $withPrePost = false): void
     {
-        $total = $quiz->questions()->count();
+        $questions = $quiz->questions()->get();
+        $total = $questions->count();
 
         for ($n = 0; $n < $attempts; $n++) {
             $score = random_int((int) ceil($total / 2), $total);
-            $points = $score * 15 + ($score === $total ? 22 : 0);
             $completedAt = now()->subDays(random_int(0, 40))->subMinutes(random_int(0, 600));
 
             $type = match (true) {
@@ -156,7 +159,9 @@ class DemoSeeder extends Seeder
                 $completedAt = now()->subHours(3);
             }
 
-            $user->attempts()->create([
+            $points = $score * 15 + ($score === $total ? 22 : 0);
+
+            $attempt = $user->attempts()->create([
                 'quiz_id' => $quiz->id,
                 'assessment_type' => $type,
                 'confidence_before' => random_int(2, 5),
@@ -170,6 +175,20 @@ class DemoSeeder extends Seeder
             ]);
 
             $user->increment('points', $points);
+
+            // Respuestas coherentes con la nota para alimentar la analítica por dificultad y tipo.
+            $correctIds = $questions->shuffle()->take($score)->pluck('id');
+
+            foreach ($questions as $question) {
+                $isCorrect = $correctIds->contains($question->id);
+                $wrong = collect(array_keys($question->options))->diff($question->correct_answers)->values();
+
+                $attempt->answers()->create([
+                    'question_id' => $question->id,
+                    'selected_answers' => $isCorrect ? $question->correct_answers : [$wrong->random()],
+                    'is_correct' => $isCorrect,
+                ]);
+            }
         }
     }
 }

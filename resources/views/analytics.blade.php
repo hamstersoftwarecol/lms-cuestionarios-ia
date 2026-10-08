@@ -5,7 +5,7 @@
     <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <x-stat-card label="Cuestionarios" :value="$t['attempts']" icon="academic-cap" color="indigo" />
         <x-stat-card label="Nota media" :value="$t['avg_score'].' %'" icon="chart-bar" color="emerald" :hint="'Mejor: '.$t['best_score'].' %'" />
-        <x-stat-card label="Tiempo respondiendo" :value="$t['study_minutes'].' min'" icon="clock" color="sky" />
+        <x-stat-card label="Tiempo total" :value="$t['study_minutes'].' min'" icon="clock" color="sky" />
         <x-stat-card label="Tareas del plan" :value="$t['tasks_completed'].'/'.$t['tasks_total']" icon="check-circle" color="amber" />
     </div>
 

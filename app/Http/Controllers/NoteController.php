@@ -63,7 +63,11 @@ class NoteController extends Controller
     {
         set_time_limit(180);
         $user = $request->user();
-        $data = $request->safe()->only(['title', 'content', 'folder_id']);
+        $data = [
+            'title' => $request->validated('title'),
+            'content' => $request->validated('content'),
+            'folder_id' => $request->validated('folder_id'),
+        ];
 
         if ($file = $request->file('document')) {
             $extension = Str::lower($file->getClientOriginalExtension());
@@ -131,9 +135,11 @@ class NoteController extends Controller
 
     public function update(NoteRequest $request, Note $note): RedirectResponse
     {
-        $this->authorize('update', $note);
-
-        $note->update($request->safe()->only(['title', 'content', 'folder_id']));
+        $note->update([
+            'title' => $request->validated('title'),
+            'content' => $request->validated('content'),
+            'folder_id' => $request->validated('folder_id'),
+        ]);
         $note->tags()->sync($request->tagIds());
 
         ActivityLogger::log('note.updated', "Editó la nota «{$note->title}»", $note);

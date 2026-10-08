@@ -4,8 +4,8 @@
         $ring = $pct >= 75 ? 'text-emerald-500' : ($pct >= 50 ? 'text-amber-500' : 'text-rose-500');
     @endphp
 
-    <div class="grid gap-6 lg:grid-cols-3">
-        <div class="card card-body flex flex-col items-center text-center lg:col-span-1">
+    <div class="grid gap-6 lg:grid-cols-3 lg:items-start">
+        <div class="card card-body flex flex-col items-center text-center lg:sticky lg:top-24 lg:col-span-1">
             <p class="text-sm font-semibold uppercase tracking-wider muted">{{ $attempt->assessment_type->label() }}</p>
             <div class="relative mt-4 h-40 w-40">
                 <svg viewBox="0 0 36 36" class="h-40 w-40 -rotate-90">

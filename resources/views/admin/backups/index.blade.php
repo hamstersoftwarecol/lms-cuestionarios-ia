@@ -22,7 +22,7 @@
 
         <div class="grid gap-6 lg:grid-cols-3">
             <div class="card card-body lg:col-span-2">
-                <table data-datatable data-export-title="Copias de seguridad" data-order='[[1, "desc"]]' class="display w-full">
+                <table data-datatable data-export-title="Copias de seguridad" data-order='[[1, "desc"]]' class="hover w-full">
                     <thead><tr><th>Archivo</th><th>Fecha</th><th>Tamaño</th><th class="no-export no-sort">Acciones</th></tr></thead>
                     <tbody>
                         @foreach ($backups as $backup)

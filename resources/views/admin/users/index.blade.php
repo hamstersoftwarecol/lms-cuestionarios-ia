@@ -2,7 +2,7 @@
     <x-page-header title="Gestión de usuarios" :subtitle="$users->count().' usuarios registrados'" />
 
     <div class="card card-body">
-        <table data-datatable data-export-title="Usuarios" data-order='[[5, "desc"]]' class="display w-full">
+        <table data-datatable data-export-title="Usuarios" data-order='[[5, "desc"]]' class="hover w-full">
             <thead>
                 <tr>
                     <th>Usuario</th>
@@ -20,7 +20,7 @@
                 @foreach ($users as $user)
                     <tr>
                         <td>
-                            <div class="flex items-center gap-2">
+                            <div class="inline-flex items-center gap-2 align-middle">
                                 <x-avatar :user="$user" class="h-8 w-8" />
                                 <span class="font-medium">{{ $user->name }}</span>
                             </div>

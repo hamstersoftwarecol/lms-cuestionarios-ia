@@ -16,7 +16,7 @@
     </x-page-header>
 
     <div class="card card-body">
-        <table data-datatable data-export-title="Auditoría" data-order='[[0, "desc"]]' data-page-length="25" class="display w-full">
+        <table data-datatable data-export-title="Auditoría" data-order='[[0, "desc"]]' data-page-length="25" class="hover w-full">
             <thead>
                 <tr><th>Fecha</th><th>Usuario</th><th>Acción</th><th>Descripción</th><th>IP</th><th>Dispositivo</th></tr>
             </thead>
