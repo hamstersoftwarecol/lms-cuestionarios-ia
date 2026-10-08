@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Services\ActivityLogger;
+use App\Services\Ai\TextToSpeech;
+use App\Support\SessionRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +21,9 @@ class ProfileController extends Controller
     {
         return view('profile.edit', [
             'user' => $request->user(),
+            'voices' => TextToSpeech::voices(),
+            'sessions' => SessionRepository::forUser($request->user()),
+            'sessionsSupported' => SessionRepository::isDatabaseDriver(),
         ]);
     }
 
@@ -33,6 +39,7 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+        ActivityLogger::log('profile.updated', 'Actualizó su perfil');
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
@@ -42,11 +49,13 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // Las cuentas creadas con Google no tienen contraseña: confirman escribiendo ELIMINAR.
         $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
+            'password' => $request->user()->password === null ? ['required', 'in:ELIMINAR'] : ['required', 'current_password'],
+        ], ['password.in' => 'Escribe ELIMINAR para confirmar.']);
 
         $user = $request->user();
+        ActivityLogger::log('profile.deleted', "Eliminó su cuenta ({$user->email})");
 
         Auth::logout();
 

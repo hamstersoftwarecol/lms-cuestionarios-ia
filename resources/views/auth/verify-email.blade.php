@@ -1,31 +1,39 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+<x-guest-layout title="Verifica tu correo">
+    <div class="text-center">
+        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-3xl dark:bg-brand-500/10">✉️</div>
+        <h1 class="mt-4 text-2xl font-bold">Verifica tu correo</h1>
+        <p class="mt-2 text-sm muted">
+            Enviamos un código de 6 dígitos a <strong class="text-slate-700 dark:text-slate-200">{{ auth()->user()->email }}</strong>.
+            Caduca en {{ config('lms.otp.ttl_minutes') }} minutos.
+        </p>
     </div>
 
-    @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
-        </div>
+    @if (session('status') === 'verification-code-sent')
+        <x-auth-session-status class="mt-4" status="Te enviamos un nuevo código de verificación." />
     @endif
 
-    <div class="mt-4 flex items-center justify-between">
+    <form method="POST" action="{{ route('verification.otp') }}" class="mt-6 space-y-4"
+          x-data="{ code: '' }">
+        @csrf
+        <div>
+            <x-input-label for="code" value="Código de verificación" class="sr-only" />
+            <input id="code" name="code" x-model="code" inputmode="numeric" autocomplete="one-time-code" maxlength="7" required autofocus
+                   placeholder="000000"
+                   class="input text-center font-mono text-3xl tracking-[0.5em]" />
+            <x-input-error :messages="$errors->get('code')" class="text-center" />
+        </div>
+        <x-primary-button class="w-full" x-bind:disabled="code.replace(/\D/g, '').length !== 6">Verificar</x-primary-button>
+    </form>
+
+    <div class="mt-6 flex items-center justify-between text-sm">
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
-
-            <div>
-                <x-primary-button>
-                    {{ __('Resend Verification Email') }}
-                </x-primary-button>
-            </div>
+            <button type="submit" class="link">Reenviar código</button>
         </form>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-
-            <button type="submit" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                {{ __('Log Out') }}
-            </button>
+            <button type="submit" class="muted hover:underline">Cerrar sesión</button>
         </form>
     </div>
 </x-guest-layout>

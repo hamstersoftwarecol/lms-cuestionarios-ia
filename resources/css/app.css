@@ -1,3 +1,174 @@
+@import 'datatables.net-dt/css/dataTables.dataTables.css';
+@import 'datatables.net-buttons-dt/css/buttons.dataTables.css';
+@import 'datatables.net-responsive-dt/css/responsive.dataTables.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    [x-cloak] {
+        display: none !important;
+    }
+
+    html {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+@layer components {
+    .card {
+        @apply rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900;
+    }
+
+    .card-body {
+        @apply p-4 sm:p-6;
+    }
+
+    .card-title {
+        @apply text-base font-semibold text-slate-900 dark:text-white;
+    }
+
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 dark:focus-visible:ring-offset-slate-900;
+    }
+
+    .btn-primary {
+        @apply btn bg-brand-600 text-white shadow-sm hover:bg-brand-500;
+    }
+
+    .btn-secondary {
+        @apply btn border border-slate-300 bg-white text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700;
+    }
+
+    .btn-ghost {
+        @apply btn text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800;
+    }
+
+    .btn-danger {
+        @apply btn bg-rose-600 text-white shadow-sm hover:bg-rose-500;
+    }
+
+    .btn-success {
+        @apply btn bg-emerald-600 text-white shadow-sm hover:bg-emerald-500;
+    }
+
+    .btn-sm {
+        @apply px-3 py-1.5 text-xs;
+    }
+
+    .input {
+        @apply block w-full rounded-xl border-slate-300 bg-white text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-brand-500 focus:ring-brand-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500;
+    }
+
+    .label {
+        @apply mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300;
+    }
+
+    .checkbox {
+        @apply rounded border-slate-300 text-brand-600 shadow-sm focus:ring-brand-500 dark:border-slate-600 dark:bg-slate-800;
+    }
+
+    .pill {
+        @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset;
+    }
+
+    .muted {
+        @apply text-slate-500 dark:text-slate-400;
+    }
+
+    .link {
+        @apply font-medium text-brand-600 hover:text-brand-500 dark:text-brand-400;
+    }
+
+    .nav-item {
+        @apply flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white;
+    }
+
+    .nav-item-active {
+        @apply bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-300;
+    }
+
+    .table-basic {
+        @apply min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-800;
+    }
+
+    .table-basic th {
+        @apply px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400;
+    }
+
+    .table-basic td {
+        @apply whitespace-nowrap px-3 py-2 text-slate-700 dark:text-slate-300;
+    }
+
+    .prose-note {
+        @apply max-w-none whitespace-pre-line break-words leading-relaxed text-slate-700 dark:text-slate-300;
+    }
+}
+
+/* ---------- DataTables (v3) adaptado a Tailwind y modo oscuro ---------- */
+div.dt-container {
+    @apply text-sm text-slate-700 dark:text-slate-300;
+}
+
+div.dt-container .dt-layout-row {
+    @apply flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between;
+}
+
+div.dt-container .dt-layout-row + .dt-layout-row {
+    @apply mt-3;
+}
+
+div.dt-container .dt-search input,
+div.dt-container .dt-length select {
+    @apply ml-2 rounded-lg border-slate-300 bg-white py-1.5 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100;
+}
+
+div.dt-container .dt-buttons {
+    @apply flex flex-wrap gap-2;
+}
+
+div.dt-container .dt-buttons .dt-button {
+    @apply btn-secondary btn-sm m-0 bg-none;
+}
+
+div.dt-container table.dataTable {
+    @apply w-full border-collapse;
+}
+
+div.dt-container table.dataTable thead th {
+    @apply border-b border-slate-200 bg-slate-50 px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:bg-slate-800/60 dark:text-slate-400;
+}
+
+div.dt-container table.dataTable tbody td {
+    @apply border-b border-slate-100 px-3 py-2 align-middle dark:border-slate-800;
+}
+
+div.dt-container table.dataTable tbody tr:hover {
+    @apply bg-slate-50 dark:bg-slate-800/40;
+}
+
+div.dt-container .dt-paging .dt-paging-button {
+    @apply mx-0.5 rounded-lg border-0 px-3 py-1 text-slate-600 dark:text-slate-300 !important;
+}
+
+div.dt-container .dt-paging .dt-paging-button.current,
+div.dt-container .dt-paging .dt-paging-button:hover:not(.disabled) {
+    @apply bg-brand-600 text-white !important;
+}
+
+div.dt-container .dt-paging .dt-paging-button.disabled {
+    @apply opacity-40 !important;
+}
+
+div.dt-container .dt-info {
+    @apply text-xs text-slate-500 dark:text-slate-400;
+}
+
+div.dt-button-collection {
+    @apply rounded-xl border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800 !important;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control::before {
+    @apply border-l-brand-600 !important;
+}
