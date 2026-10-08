@@ -15,8 +15,9 @@ class PasswordController extends Controller
      */
     public function update(Request $request): RedirectResponse
     {
+        // Quien entró con Google puede definir una contraseña sin conocer la anterior.
         $validated = $request->validateWithBag('updatePassword', [
-            'current_password' => ['required', 'current_password'],
+            'current_password' => $request->user()->password === null ? ['nullable'] : ['required', 'current_password'],
             'password' => ['required', Password::defaults(), 'confirmed'],
         ]);
 
